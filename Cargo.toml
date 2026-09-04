@@ -1,0 +1,11 @@
+[package]
+name = "log-sieve"
+version = "1.0.0"
+edition = "2021"
+description = "HTTP access log analyzer — filter by status/IP/path, top-N reports"
+authors = ["v01dst"]
+license = "MIT"
+
+[profile.release]
+lto = true
+strip = true
