@@ -276,6 +276,22 @@ fn main() {
     }
 
     for e in &filtered {
+        if opts.jsonl {
+            let lat = match e.latency_ms {
+                Some(l) => l.to_string(),
+                None => "null".to_string(),
+            };
+            println!(
+                "{{\"ip\": {}, \"method\": {}, \"path\": {}, \"status\": {}, \"bytes\": {}, \"latency_ms\": {}}}",
+                json_str(&e.ip),
+                json_str(&e.method),
+                json_str(&e.path),
+                e.status,
+                e.bytes,
+                lat
+            );
+            continue;
+        }
         match e.latency_ms {
             Some(l) => println!(
                 "{} {} {} {} {} {}ms",
