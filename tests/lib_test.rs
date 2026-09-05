@@ -27,10 +27,7 @@ fn parses_combined_format() {
 
 #[test]
 fn parses_dash_bytes_as_zero() {
-    let e = parse_line(
-        r#"10.0.0.1 - - [x] "HEAD / HTTP/1.1" 200 - "-" "-""#,
-    )
-    .unwrap();
+    let e = parse_line(r#"10.0.0.1 - - [x] "HEAD / HTTP/1.1" 200 - "-" "-""#).unwrap();
     assert_eq!(e.bytes, 0);
 }
 
@@ -74,9 +71,18 @@ fn percentile_basics() {
 
 #[test]
 fn latency_extraction_handles_trailing_text() {
-    let e = parse_line(
-        r#"1.2.3.4 - - [x] "GET / HTTP/1.1" 200 1 "-" "-" latency=42ms upstream=cache"#,
-    )
-    .unwrap();
+    let e =
+        parse_line(r#"1.2.3.4 - - [x] "GET / HTTP/1.1" 200 1 "-" "-" latency=42ms upstream=cache"#)
+            .unwrap();
     assert_eq!(e.latency_ms, Some(42));
+}
+
+#[test]
+#[test]
+fn jsonl_round_trip_fields() {
+    let e =
+        parse_line(r#"10.0.0.1 - - [x] "GET /a?b=1 HTTP/1.1" 200 5 "-" "-" latency=7ms"#).unwrap();
+    assert_eq!(e.path, "/a?b=1");
+    assert_eq!(e.status, 200);
+    assert_eq!(e.latency_ms, Some(7));
 }

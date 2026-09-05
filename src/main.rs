@@ -33,6 +33,7 @@ struct Options {
     top: usize,
     summary: bool,
     json: bool,
+    jsonl: bool,
     file: Option<String>,
 }
 
@@ -46,6 +47,7 @@ fn parse_args() -> Options {
         top: 5,
         summary: false,
         json: false,
+        jsonl: false,
         file: None,
     };
     let mut i = 0;
@@ -95,6 +97,7 @@ fn parse_args() -> Options {
                 o.json = true;
                 o.summary = true;
             }
+            "--jsonl" => o.jsonl = true,
             "-h" | "--help" => {
                 print_usage();
                 exit(0);
